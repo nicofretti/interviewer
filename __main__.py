@@ -8,6 +8,25 @@ from prompts import CANDIDATE_PROMPT_SYSTEM, INTERVIEWER_PROMPT_SYSTEM
 
 
 class Interview:
+    """
+    The Interview class facilitates the management of an interview process by handling messages between an interviewer and a candidate.
+    Attributes:
+        messages_interviewer (list): A list of messages from the interviewer.
+        messages_candidate (list): A list of messages from the candidate.
+        interactions (list): A list of interactions between the interviewer and the candidate.
+    Methods:
+        __init__(interviewer_system_prompt, candidate_system_prompt):
+            Initializes the Interview class with system prompts for both the interviewer and the candidate.
+        add_interaction(role: str, message: str):
+            Adds an interaction to the interactions list.
+        generate_question_to_candidate(question: str):
+            Generates a list of messages for the candidate, including a new question.
+        update_interviewer_messages(message: str):
+            Updates the interviewer's messages with a new message and a prompt to ask a question.
+        export_json(filename: str):
+            Exports the interactions to a JSON file.
+    """
+
     messages_interviewer: list
     messages_candidate: list
     interactions: list
@@ -84,31 +103,6 @@ if __name__ == "__main__":
     conduct_interview(
         interactions=15,
         field="Software Engineer",
-        domain="System Design and Architecture",
-        filename="software_engineer_system_design_and_architecture.json",
-    )
-    conduct_interview(
-        interactions=15,
-        field="Software Engineer",
-        domain="Algorithms and Data Structures",
-        filename="software_engineer_algorithms_data_structures.json",
-    )
-    conduct_interview(
-        interactions=15,
-        field="Software Engineer",
         domain="ML and AI",
         filename="software_engineer_ml_and_ai.json",
     )
-    conduct_interview(
-        interactions=15,
-        field="Software Engineer",
-        domain="MLOps and Deployment",
-        filename="software_engineer_mlops_deployment.json",
-    )
-    conduct_interview(
-        interactions=15,
-        field="Software Engineer",
-        domain="SQL and Databases",
-        filename="software_engineer_sql_databases.json",
-    )
-    #881
