@@ -1,0 +1,122 @@
+[
+    {
+        "role": "Interviewer",
+        "message": "Implement an algorithm to find the longest common subsequence (LCS) between two given strings. Explain the time and space complexity of your solution."
+    },
+    {
+        "role": "Candidate",
+        "message": "To find the longest common subsequence (LCS) between two strings, we can use dynamic programming. Here's the implementation in Python:\n\n```python\ndef lcs(str1, str2):\n    m, n = len(str1), len(str2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    \n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    \n    return dp[m][n]\n```\n\nThe algorithm works as follows:\n1. We create a 2D DP table of size `(m+1) x (n+1)`, where `m` and `n` are the lengths of `str1` and `str2`, respectively. The extra row and column are used for base cases.\n2. We initialize the first row and column of the DP table with zeros.\n3. We iterate through the characters of `str1` and `str2` and fill the DP table.\n   - If the characters at the current positions are equal, we add 1 to the length of the LCS up to the previous positions.\n   - If the characters are different, we take the maximum length of LCS without including either character.\n4. The value in `dp[m][n]` gives the length of the LCS.\n\nTime Complexity: The algorithm uses nested loops to fill the DP table, resulting in a time complexity of O(mn), where m and n are the lengths of the input strings.\n\nSpace Complexity: The algorithm uses a 2D DP table of size `(m+1) x (n+1)`, so the space complexity is O(mn). However, we can optimize the space complexity to O(min(m, n)) by using a 1D DP table and storing only the previous row or column."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to reverse a singly-linked list in-place."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's an implementation of a function to reverse a singly-linked list in-place in C++:\n\n```cpp\nListNode* reverseList(ListNode* head) {\n    ListNode* prev = nullptr;\n    ListNode* curr = head;\n    \n    while (curr != nullptr) {\n        ListNode* nextTemp = curr->next;\n        curr->next = prev;\n        prev = curr;\n        curr = nextTemp;\n    }\n    \n    return prev;\n}\n```\n\nThe function takes the head of the linked list as input and returns the new head of the reversed list.\n\nThe reversal is done by maintaining three pointers:\n- `prev`: Points to the previous node, initially set to `nullptr`.\n- `curr`: Points to the current node being processed, initially set to the head.\n- `nextTemp`: Temporarily stores the next node of the current node.\n\nThe reversal process is as follows:\n1. While `curr` is not `nullptr`, do the following:\n   - Store the next node of `curr` in `nextTemp`.\n   - Reverse the `next` pointer of `curr` to point to `prev`.\n   - Move `prev` to `curr`, and `curr` to `nextTemp`.\n2. After the loop, `prev` will be the new head of the reversed list.\n\nThe time complexity of this function is O(n), where n is the number of nodes in the linked list, as we traverse the list once. The space complexity is O(1) since we only use a constant amount of extra space for the pointers."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Given an array of integers, write a function that finds the two numbers in the array that add up to a given target sum."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's a solution to find the two numbers that add up to a target sum in an array of integers:\n\n```python\ndef find_two_sum(nums, target):\n    num_map = {}\n    \n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in num_map:\n            return [num_map[complement], i]\n        num_map[num] = i\n    \n    return None\n```\n\nThis function uses a hash map (dictionary in Python) to store the numbers and their indices. It iterates through the array once:\n\n1. For each number, it calculates the complement (target - current number).\n2. If the complement exists in the hash map, it means we have found the two numbers that add up to the target. We return their indices.\n3. If the complement is not found, we store the current number and its index in the hash map.\n4. If no pair is found after the iteration, we return None.\n\nThe time complexity of this solution is O(n) since we iterate through the array once. The space complexity is also O(n) in the worst case, as we store the numbers and their indices in the hash map."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to find the kth largest element in an unsorted array."
+    },
+    {
+        "role": "Candidate",
+        "message": "To find the kth largest element in an unsorted array, we can use the QuickSelect algorithm, which is a variation of QuickSort. Here's an implementation in Python:\n\n```python\ndef find_kth_largest(nums, k):\n    def partition(left, right, pivot_index):\n        pivot = nums[pivot_index]\n        nums[pivot_index], nums[right] = nums[right], nums[pivot_index]\n        store_index = left\n        for i in range(left, right):\n            if nums[i] < pivot:\n                nums[store_index], nums[i] = nums[i], nums[store_index]\n                store_index += 1\n        nums[right], nums[store_index] = nums[store_index], nums[right]\n        return store_index\n\n    def select(left, right, k_smallest):\n        if left == right:\n            return nums[left]\n        pivot_index = random.randint(left, right)\n        pivot_index = partition(left, right, pivot_index)\n        if k_smallest == pivot_index:\n            return nums[k_smallest]\n        elif k_smallest < pivot_index:\n            return select(left, pivot_index - 1, k_smallest)\n        else:\n            return select(pivot_index + 1, right, k_smallest)\n\n    return select(0, len(nums) - 1, len(nums) - k)\n```\n\nThe key steps are:\n\n1. We use the `partition` function to partition the array around a pivot element. It selects a pivot, moves all elements smaller than the pivot to the left side, and all elements greater than the pivot to the right side. It returns the final position of the pivot element.\n\n2. The `select` function recursively partitions the array until the kth largest element is found. It selects a random pivot index, partitions the array, and then determines which side of the partition the kth largest element lies in. If the pivot index is equal to `len(nums) - k`, we have found the kth largest element. If the pivot index is greater than `len(nums) - k`, we recursively search the left side of the partition. Otherwise, we recurs"
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to detect if a binary tree is a valid binary search tree."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's an implementation in Python to check if a binary tree is a valid binary search tree:\n\n```python\ndef is_valid_bst(root):\n    def validate(node, min_val, max_val):\n        if node is None:\n            return True\n        \n        if node.val <= min_val or node.val >= max_val:\n            return False\n        \n        return validate(node.left, min_val, node.val) and validate(node.right, node.val, max_val)\n    \n    return validate(root, float('-inf'), float('inf'))\n```\n\nThe key points are:\n\n1. We use a recursive helper function `validate` that takes the current node, the minimum value, and the maximum value allowed for the current subtree.\n\n2. The base case is when we reach a null node, which is considered a valid BST.\n\n3. For each node, we check if its value is within the valid range defined by `min_val` and `max_val`. If the node's value is out of range, we return `False` as it violates the BST property.\n\n4. We recursively validate the left subtree by updating the maximum value to the current node's value, and validate the right subtree by updating the minimum value to the current node's value.\n\n5. If all nodes in the tree satisfy the BST property, we return `True`.\n\nThe time complexity is O(n) as we visit each node once, and the space complexity is O(h) for the recursive calls on the call stack, where h is the height of the tree."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Given a 2D grid of 0s and 1s, write a function that finds the number of islands. An island is defined as a group of connected 1s (land) surrounded by 0s (water)."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's a solution to find the number of islands in a 2D grid using depth-first search (DFS):\n\n```python\ndef numIslands(grid):\n    if not grid:\n        return 0\n    \n    m, n = len(grid), len(grid[0])\n    islands = 0\n    \n    def dfs(i, j):\n        if i < 0 or i >= m or j < 0 or j >= n or grid[i][j] != '1':\n            return\n        \n        grid[i][j] = '0'  # Mark the current cell as visited\n        \n        # Explore the neighboring cells\n        dfs(i-1, j)  # Up\n        dfs(i+1, j)  # Down\n        dfs(i, j-1)  # Left\n        dfs(i, j+1)  # Right\n    \n    for i in range(m):\n        for j in range(n):\n            if grid[i][j] == '1':\n                islands += 1\n                dfs(i, j)\n    \n    return islands\n```\n\nThe key steps are:\n\n1. Check if the grid is empty. If so, return 0 since there are no islands.\n\n2. Initialize a variable `islands` to keep track of the count of islands.\n\n3. Iterate through each cell in the grid. If a cell contains '1' (land), increment the `islands` count and perform DFS starting from that cell.\n\n4. In the DFS function:\n   - Check if the current cell is out of bounds or not equal to '1'. If so, return.\n   - Mark the current cell as visited by setting it to '0'.\n   - Recursively explore the neighboring cells (up, down, left, right) by calling DFS on each of them.\n\n5. After the DFS is complete, the `islands` variable will hold the total count of islands in the grid.\n\n6. Return the `islands` count.\n\nThe time complexity of this solution is O(m * n), where m and n are the dimensions of the grid, as we visit each cell exactly once. The space complexity is O(m * n) in the worst case, where the entire gri"
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to find the first non-repeating character in a given string."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's an implementation in Python to find the first non-repeating character in a given string:\n\ndef first_non_repeating_char(string):\n    char_count = {}\n    \n    # Count the occurrences of each character\n    for char in string:\n        char_count[char] = char_count.get(char, 0) + 1\n    \n    # Find the first character with count 1\n    for char in string:\n        if char_count[char] == 1:\n            return char\n    \n    return None\n\nThe approach is as follows:\n\n1. Initialize an empty dictionary char_count to store the count of each character.\n\n2. Iterate through the string and update the count of each character in char_count. If the character is not present, initialize its count to 0 and then increment it by 1.\n\n3. Iterate through the string again and check the count of each character in char_count. Return the first character that has a count of 1, as it is the first non-repeating character.\n\n4. If no non-repeating character is found, return None.\n\nThe time complexity of this solution is O(n), where n is the length of the string, as we iterate through the string twice. The space complexity is O(k), where k is the number of unique characters in the string, as we store the character counts in the dictionary."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Given a binary tree, write a function to serialize and deserialize it."
+    },
+    {
+        "role": "Candidate",
+        "message": "To serialize a binary tree, we can use a preorder traversal and represent null nodes with a special character like '#'. To deserialize, we can reconstruct the tree by parsing the serialized string and creating nodes accordingly. Here's an implementation in Python:\n\n```python\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef serialize(root):\n    if not root:\n        return '#'\n    return str(root.val) + ',' + serialize(root.left) + ',' + serialize(root.right)\n\ndef deserialize(data):\n    def dfs():\n        val = next(values)\n        if val == '#':\n            return None\n        node = TreeNode(int(val))\n        node.left = dfs()\n        node.right = dfs()\n        return node\n    \n    values = iter(data.split(','))\n    return dfs()\n```\n\nThe `serialize` function performs a preorder traversal of the binary tree. It appends the node's value to the serialized string, followed by a comma separator. If a node is None, it appends '#' instead.\n\nThe `deserialize` function takes the serialized string and reconstructs the binary tree. It uses a helper function `dfs` that iteratively retrieves values from the serialized string using the `next` function. If the value is '#', it returns None. Otherwise, it creates a new node with the value, recursively deserializes the left and right subtrees, and returns the node.\n\nThe time complexity of both serialization and deserialization is O(n), where n is the number of nodes in the binary tree, as we visit each node once. The space complexity is O(n) as well, as the serialized string and the call stack during deserialization can contain up to n elements."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to find the longest palindromic substring within a given string."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's an implementation to find the longest palindromic substring within a given string:\n\n```python\ndef longestPalindrome(s):\n    n = len(s)\n    if n < 2:\n        return s\n    \n    start, maxLen = 0, 1\n    \n    for i in range(n):\n        left, right = i, i\n        while left >= 0 and right < n and s[left] == s[right]:\n            if right - left + 1 > maxLen:\n                start = left\n                maxLen = right - left + 1\n            left -= 1\n            right += 1\n        \n        left, right = i, i + 1\n        while left >= 0 and right < n and s[left] == s[right]:\n            if right - left + 1 > maxLen:\n                start = left\n                maxLen = right - left + 1\n            left -= 1\n            right += 1\n    \n    return s[start : start + maxLen]\n```\n\nThe approach expands around each character, considering both odd and even length palindromes. It keeps track of the longest palindrome found so far.\n\nTime complexity: O(n^2)\nSpace complexity: O(1)"
+    },
+    {
+        "role": "Interviewer",
+        "message": "Given an array of integers, write a function that finds the maximum subarray sum."
+    },
+    {
+        "role": "Candidate",
+        "message": "To find the maximum subarray sum, we can use Kadane's algorithm. Here's the solution in Python:\n\ndef max_subarray_sum(arr):\n    max_sum = float('-inf')\n    current_sum = 0\n    \n    for num in arr:\n        current_sum = max(num, current_sum + num)\n        max_sum = max(max_sum, current_sum)\n    \n    return max_sum\n\nThe key steps are:\n1. Initialize max_sum to negative infinity and current_sum to 0.\n2. Iterate through the array. For each number, update current_sum as the maximum of either the number itself or the sum of current_sum and the number.\n3. Update max_sum as the maximum of max_sum and current_sum.\n4. After the loop, max_sum will hold the maximum subarray sum.\n\nThe time complexity is O(n) since we iterate through the array once. The space complexity is O(1) as we only use a constant amount of extra space."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to find the median of two sorted arrays."
+    },
+    {
+        "role": "Candidate",
+        "message": "To find the median of two sorted arrays, we can use a binary search approach. Here's an implementation in Python:\n\n```python\ndef findMedianSortedArrays(nums1, nums2):\n    if len(nums1) > len(nums2):\n        nums1, nums2 = nums2, nums1\n    \n    m, n = len(nums1), len(nums2)\n    left, right = 0, m\n    \n    while left <= right:\n        partitionX = (left + right) // 2\n        partitionY = (m + n + 1) // 2 - partitionX\n        \n        maxLeftX = float('-inf') if partitionX == 0 else nums1[partitionX - 1]\n        minRightX = float('inf') if partitionX == m else nums1[partitionX]\n        maxLeftY = float('-inf') if partitionY == 0 else nums2[partitionY - 1]\n        minRightY = float('inf') if partitionY == n else nums2[partitionY]\n        \n        if maxLeftX <= minRightY and maxLeftY <= minRightX:\n            if (m + n) % 2 == 0:\n                return (max(maxLeftX, maxLeftY) + min(minRightX, minRightY)) / 2\n            else:\n                return max(maxLeftX, maxLeftY)\n        elif maxLeftX > minRightY:\n            right = partitionX - 1\n        else:\n            left = partitionX + 1\n    \n    return 0.0\n```\n\nThe key steps are:\n\n1. Ensure `nums1` is the smaller array for simplicity.\n2. Initialize pointers `left` and `right` to perform binary search on `nums1`.\n3. While `left <= right`, calculate the partition points `partitionX` and `partitionY`.\n4. Find the four boundary elements: `maxLeftX`, `minRightX`, `maxLeftY`, `minRightY`.\n5. If `maxLeftX <= minRightY` and `maxLeftY <= minRightX"
+    },
+    {
+        "role": "Interviewer",
+        "message": "Given a string, write a function to find the first unique character in the string."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's a solution to find the first unique character in a string:\n\n```python\ndef firstUniqChar(s: str) -> int:\n    char_count = {}\n    \n    # Count the occurrences of each character\n    for char in s:\n        char_count[char] = char_count.get(char, 0) + 1\n    \n    # Find the first character with count 1\n    for i, char in enumerate(s):\n        if char_count[char] == 1:\n            return i\n    \n    return -1\n```\n\nThe approach is as follows:\n\n1. We create a dictionary `char_count` to store the count of each character in the string.\n\n2. We iterate through the string and update the count of each character in the `char_count` dictionary. If a character is encountered for the first time, its count is initialized to 1. Otherwise, its count is incremented by 1.\n\n3. After counting the occurrences, we iterate through the string again. For each character, we check if its count in the `char_count` dictionary is 1. If it is, we have found the first unique character, so we return its index.\n\n4. If no unique character is found after iterating through the entire string, we return -1 to indicate that there is no unique character.\n\nThe time complexity of this solution is O(n), where n is the length of the string, as we iterate through the string twice. The space complexity is O(1) since the size of the `char_count` dictionary is limited by the number of unique characters in the string, which is at most 26 for lowercase English letters."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to find the kth smallest element in a binary search tree."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's an implementation to find the kth smallest element in a binary search tree:\n\n```python\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef kthSmallest(root: TreeNode, k: int) -> int:\n    stack = []\n    curr = root\n    \n    while curr or stack:\n        while curr:\n            stack.append(curr)\n            curr = curr.left\n        \n        curr = stack.pop()\n        k -= 1\n        \n        if k == 0:\n            return curr.val\n        \n        curr = curr.right\n```\n\nThe approach uses an iterative inorder traversal of the BST. We maintain a stack to keep track of the nodes. \n\nWe start by pushing all the left children of the current node onto the stack until there are no more left children. This ensures we process nodes in ascending order.\n\nThen we pop a node from the stack, decrement k, and check if k has reached 0. If so, we have found the kth smallest element and return its value.\n\nIf k is not 0, we move to the right child of the popped node and repeat the process.\n\nTime Complexity: O(H + k), where H is the height of the BST.\nSpace Complexity: O(H) to store the stack."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Given a string, write a function to determine if it is a valid palindrome, considering only alphanumeric characters and ignoring cases."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's a solution to determine if a string is a valid palindrome, considering only alphanumeric characters and ignoring case:\n\n```python\ndef is_palindrome(s: str) -> bool:\n    left, right = 0, len(s) - 1\n    \n    while left < right:\n        while left < right and not s[left].isalnum():\n            left += 1\n        while left < right and not s[right].isalnum():\n            right -= 1\n        \n        if s[left].lower() != s[right].lower():\n            return False\n        \n        left += 1\n        right -= 1\n    \n    return True\n```\n\nThe approach uses two pointers, `left` and `right`, starting from the beginning and end of the string, respectively. \n\nWe iterate while `left` is less than `right`. At each step:\n1. We skip any non-alphanumeric characters from the left using a while loop.\n2. We skip any non-alphanumeric characters from the right using another while loop.\n3. We compare the lowercase characters at the `left` and `right` pointers. If they are not equal, the string is not a palindrome, so we return `False`.\n4. If the characters match, we increment `left` and decrement `right` to move the pointers inward.\n\nIf we complete the iteration without returning `False`, it means all the alphanumeric characters matched, and the string is a valid palindrome, so we return `True`.\n\nThe time complexity is O(n), where n is the length of the string, as we process each character at most once. The space complexity is O(1) since we only use a constant amount of extra space for the pointers."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Implement a function to find the longest increasing subsequence in an array of integers."
+    },
+    {
+        "role": "Candidate",
+        "message": "Here's an implementation of a function to find the longest increasing subsequence in an array of integers using dynamic programming:\n\n```python\ndef longest_increasing_subsequence(arr):\n    n = len(arr)\n    if n == 0:\n        return 0\n    \n    dp = [1] * n\n    \n    for i in range(1, n):\n        for j in range(i):\n            if arr[i] > arr[j]:\n                dp[i] = max(dp[i], dp[j] + 1)\n    \n    return max(dp)\n```\n\nThe key steps are:\n\n1. Initialize a DP array `dp` of size `n` with all elements set to 1, representing the length of the longest increasing subsequence ending at each index.\n\n2. Iterate through the array from index 1 to `n-1`. For each index `i`, consider all elements before it (index `j` from 0 to `i-1`).\n\n3. If `arr[i] > arr[j]`, it means we can extend the longest increasing subsequence ending at index `j` by including `arr[i]`. Update `dp[i]` as the maximum of its current value and `dp[j] + 1`.\n\n4. After the iterations, the maximum value in the `dp` array represents the length of the longest increasing subsequence in the entire array.\n\nThe time complexity is O(n^2) and the space complexity is O(n)."
+    }
+]

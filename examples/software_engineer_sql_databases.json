@@ -1,0 +1,122 @@
+[
+    {
+        "role": "Interviewer",
+        "message": "Here is a technical question related to Software Engineering, specifically in the SQL and Databases domain:\n\nExplain the difference between a clustered index and a non-clustered index, and when you would use each type of index."
+    },
+    {
+        "role": "Candidate",
+        "message": "A clustered index determines the physical order of data in a table. The table data is sorted and stored according to the clustered index key. There can only be one clustered index per table. It's best used for columns that are frequently used for sorting or are accessed sequentially.\n\nIn contrast, a non-clustered index creates a separate structure from the table data. It contains the non-clustered index key values and row locators pointing to the data. A table can have multiple non-clustered indexes. Non-clustered indexes are used to improve query performance on columns that are frequently searched by specific values or used in JOIN conditions, but aren't typically sorted or accessed sequentially.\n\nFor example, if you often query a \"Users\" table by \"LastName\" and sort by \"DateOfBirth\", it would be beneficial to create a clustered index on \"DateOfBirth\" and a non-clustered index on \"LastName\". This would optimize searches by last name while keeping the table data sorted by date of birth for efficient sequential access."
+    },
+    {
+        "role": "Interviewer",
+        "message": "What is the difference between a primary key and a foreign key, and when would you use each one in a database design?"
+    },
+    {
+        "role": "Candidate",
+        "message": "A primary key is a unique identifier for a record in a table. It must be unique and not null. You use a primary key to ensure each row can be uniquely identified and to establish relationships with other tables.\n\nA foreign key is a field in one table that refers to the primary key of another table. It establishes a link between two tables. You use a foreign key when you need to create associations and enforce referential integrity between related tables.\n\nFor example, in a database for an online store:\n- The \"Products\" table would have a primary key \"ProductID\". \n- The \"Orders\" table would have a foreign key \"ProductID\" that references the primary key in the \"Products\" table. This links each order to a specific product.\n\nSo in summary, use a primary key to uniquely identify records in a table, and use foreign keys to create relationships between tables."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Describe the purpose and benefits of normalization in database design. What are the main normal forms, and how do they help improve data integrity and reduce data redundancy?"
+    },
+    {
+        "role": "Candidate",
+        "message": "Normalization is a technique used in database design to organize data into tables and columns, minimizing data redundancy and dependency. The main purpose is to ensure data integrity, reduce data anomalies, and improve storage efficiency.\n\nThe main normal forms are:\n1. 1NF (First Normal Form): Eliminates repeating groups, ensures atomic values, and identifies each record uniquely using a primary key. This removes duplicated data.\n\n2. 2NF (Second Normal Form): In addition to 1NF, all non-key attributes must depend on the entire primary key. Partial dependencies are removed by splitting tables. This further reduces redundancy.\n\n3. 3NF (Third Normal Form): In addition to 2NF, there must be no transitive dependencies, meaning non-prime attributes can't depend on other non-prime attributes. Data is split into additional tables to remove these dependencies.\n\nHigher normal forms like BCNF and 4NF exist for more complex scenarios.\n\nThe benefits of normalization include:\n- Minimizing data redundancy, saving storage space\n- Avoiding data anomalies and inconsistencies during updates\n- Simplifying data management and ensuring referential integrity\n- Enabling easier schema evolution as requirements change\n\nBy applying normalization, the database becomes more maintainable, scalable, and free of update and deletion anomalies."
+    },
+    {
+        "role": "Interviewer",
+        "message": "What is the difference between a JOIN and a UNION in SQL, and when would you use each one to combine data from multiple tables?"
+    },
+    {
+        "role": "Candidate",
+        "message": "A JOIN combines rows from two or more tables based on a related column, allowing you to retrieve data that is spread across tables. You would use a JOIN when you need to combine related data from multiple tables based on a common key. For example:\n\nSELECT employees.name, departments.name \nFROM employees\nJOIN departments ON employees.department_id = departments.id;\n\nThis query joins the employees and departments tables based on the department_id foreign key, letting you see each employee's name along with their department name.\n\nA UNION, on the other hand, combines the result sets of two or more SELECT statements into a single result set. The SELECT statements must have the same number of columns with similar data types. You use a UNION when you want to combine data from multiple tables or queries into a single set of rows, stacking them vertically. For instance:\n\nSELECT name, email FROM customers\nUNION\nSELECT name, email FROM subscribers;\n\nThis query combines customers and subscribers into one result set containing all the names and emails, removing any duplicate rows.\n\nIn summary, use a JOIN to combine related data horizontally based on a common key, and a UNION to stack data vertically from multiple queries into one result set."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Explain the concept of transaction isolation levels in databases, and how they impact the consistency and concurrency of data access."
+    },
+    {
+        "role": "Candidate",
+        "message": "Transaction isolation levels in databases define how concurrent transactions interact with each other and impact data consistency. The four standard isolation levels are:\n\n1. Read Uncommitted: Transactions can read uncommitted changes made by other transactions, leading to dirty reads. This provides the highest concurrency but the lowest consistency.\n\n2. Read Committed: Transactions only read committed data, preventing dirty reads. However, non-repeatable reads and phantom reads can still occur due to data changes made by other transactions.\n\n3. Repeatable Read: Transactions see a consistent snapshot of the data throughout their execution. Non-repeatable reads are prevented, but phantom reads can still happen when new rows are inserted.\n\n4. Serializable: The highest isolation level. Transactions appear to execute serially, preventing all consistency issues (dirty reads, non-repeatable reads, and phantom reads). However, it comes with the lowest concurrency and potential performance impact.\n\nHigher isolation levels ensure better data consistency but may reduce concurrency. The choice of isolation level depends on the specific requirements of the application, balancing consistency and performance needs."
+    },
+    {
+        "role": "Interviewer",
+        "message": "What is the purpose of indexing in a database, and how do you determine which columns to index to optimize query performance?"
+    },
+    {
+        "role": "Candidate",
+        "message": "The purpose of indexing in a database is to improve query performance by allowing the database to quickly locate and retrieve specific rows without having to scan the entire table. Indexes are data structures, typically B-trees, that store a sorted copy of the indexed columns along with pointers to the corresponding rows on disk.\n\nTo determine which columns to index for optimizing query performance:\n\n1. Identify columns frequently used in WHERE, JOIN, and ORDER BY clauses, as these are prime candidates for indexing.\n\n2. Consider columns with high cardinality (many distinct values) and selective predicates, as they can significantly reduce the number of rows scanned.\n\n3. Avoid over-indexing, as each index incurs storage and maintenance overhead. Strike a balance based on the workload.\n\n4. For columns used in range queries or sorting, consider adding them to the index key to enable index-only scans and avoid accessing the table.\n\n5. Monitor slow queries and missing index suggestions from the database to identify additional indexing opportunities.\n\n6. Regularly review and update indexes as the data and query patterns evolve to ensure optimal performance."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Describe the differences between a clustered index and a non-clustered index, and explain the trade-offs and considerations when choosing between them."
+    },
+    {
+        "role": "Candidate",
+        "message": "A clustered index determines the physical order of data in a table. The table data is sorted and stored according to the index key. There can only be one clustered index per table. It is faster for range queries and queries using the index key.\n\nA non-clustered index has a structure separate from the data. It contains the index key and row locators pointing to the data. There can be multiple non-clustered indexes per table. Lookups require additional I/O to locate the data. They are slower than clustered indexes for range queries but can improve performance of queries using keys not in the clustered index.\n\nWhen choosing an index type, consider:\n- Clustered for tables with intensive range queries or frequently used sorting \n- Non-clustered for tables with many point queries on different attributes\n- Clustered on primary key for fast key-based access\n- Non-clustered on foreign keys and frequently queried columns\n\nThe choice depends on query patterns, data distribution, and performance requirements. Analyze queries and data characteristics to determine the optimal indexing strategy."
+    },
+    {
+        "role": "Interviewer",
+        "message": "What is the purpose of normalization in database design, and what are the main normal forms that are typically used to achieve data integrity and reduce redundancy?"
+    },
+    {
+        "role": "Candidate",
+        "message": "The purpose of normalization in database design is to organize data in a way that minimizes redundancy and dependency, which helps ensure data integrity and reduces data anomalies. The main normal forms typically used are:\n\n1. First Normal Form (1NF): Ensures that each column contains atomic values and there are no repeating groups. For example, instead of having multiple phone numbers in one column, you would create a separate table for phone numbers.\n\n2. Second Normal Form (2NF): In addition to being in 1NF, all non-key columns must depend on the entire primary key. If there is a composite primary key, no non-key column should depend on only part of it. This eliminates partial dependencies.\n\n3. Third Normal Form (3NF): In addition to being in 2NF, there should be no transitive dependencies, meaning no non-key column should depend on another non-key column. All non-key columns must depend directly on the primary key.\n\nBy applying these normal forms, you can create a well-structured database that is easier to maintain, reduces data redundancy, and helps prevent update, insertion, and deletion anomalies."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Explain the concept of database transactions, and describe the ACID properties (Atomicity, Consistency, Isolation, Durability) that ensure data integrity during concurrent access."
+    },
+    {
+        "role": "Candidate",
+        "message": "A database transaction is a sequence of operations performed as a single logical unit of work. Transactions ensure data integrity by adhering to the ACID properties:\n\nAtomicity: A transaction is treated as an indivisible unit. Either all operations within the transaction are completed successfully, or none are applied. If a failure occurs, the transaction is rolled back to its initial state.\n\nConsistency: A transaction must leave the database in a valid, consistent state after completion. It enforces data integrity constraints, such as unique keys and foreign key relationships. \n\nIsolation: Concurrent transactions must not interfere with each other. Each transaction should have the illusion of being the only one executing, and intermediate states should not be visible to other transactions.\n\nDurability: Once a transaction is committed, its changes persist permanently, even in the event of system failures. The results are typically written to non-volatile storage to ensure durability.\n\nTo handle concurrent access, databases use techniques like locking and multi-version concurrency control to maintain isolation while allowing multiple transactions to execute simultaneously."
+    },
+    {
+        "role": "Interviewer",
+        "message": "What is the difference between a one-to-many and a many-to-many relationship in a database, and how would you model each type of relationship in your database design?"
+    },
+    {
+        "role": "Candidate",
+        "message": "A one-to-many relationship is where one record in a table is related to multiple records in another table. For example, in a blog application, one Author can write many Posts. To model this, the Posts table would have a foreign key column referencing the primary key of the Authors table.\n\nA many-to-many relationship is where multiple records in one table are related to multiple records in another table. An example is Students enrolling in Courses. One Student can take many Courses, and one Course can have many Students. \n\nTo model a many-to-many, you create a junction or link table with foreign keys to both tables. So a StudentCourses table would have foreign key columns for both StudentID and CourseID. This allows mapping any Student to any number of Courses and vice versa.\n\nThe key differences are:\n- One-to-many uses a foreign key on the \"many\" side directly referencing the \"one\" side\n- Many-to-many requires a separate junction table to map the relationships, since a single foreign key is insufficient."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Describe the purpose and benefits of using stored procedures in a database, and explain how they can be used to improve performance and maintainability of database applications."
+    },
+    {
+        "role": "Candidate",
+        "message": "Stored procedures are precompiled database objects that encapsulate SQL statements and program logic. Their main purpose is to modularize database operations for reuse, security, and performance benefits.\n\nPerformance is improved because the execution plan is cached after the first run, avoiding recompilation overhead on subsequent calls. Network traffic is reduced by executing multiple statements in a single database round trip.\n\nStored procedures promote maintainability by serving as an API layer between the database and application. Database operations are centralized, allowing changes to be made in one place. This also enhances security by limiting direct table access.\n\nFor example, at my previous company we had a complex pricing calculation involving many tables. Moving this logic into a stored procedure reduced code duplication in the application and improved calculation speed by orders of magnitude. Centralizing the logic also made it easier to update pricing rules without deploying application changes."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Explain the concept of database sharding, and discuss the advantages and challenges of using this technique to scale a database system."
+    },
+    {
+        "role": "Candidate",
+        "message": "Database sharding is a technique used to horizontally partition a large database into smaller, more manageable pieces called shards. Each shard is stored on a separate database server instance, allowing the data and the load to be distributed across multiple machines.\n\nAdvantages of database sharding include:\n1. Improved scalability: Sharding enables the database to handle increased read and write traffic by distributing the load across multiple servers.\n2. Better performance: Queries can be executed faster as each shard contains a smaller subset of the overall data.\n3. Increased storage capacity: The total storage capacity can be increased by adding more shards.\n\nHowever, sharding also presents some challenges:\n1. Complexity: Sharding introduces complexity in the application and database architecture. The application needs to be aware of the sharding scheme and route queries to the appropriate shard.\n2. Data distribution: Ensuring an even distribution of data across shards can be challenging, especially if the data has a skewed access pattern.\n3. Cross-shard queries: Queries that require data from multiple shards can be difficult to execute efficiently and may require additional coordination.\n4. Maintenance: Managing and maintaining multiple shard instances can be more complex compared to a single database instance.\n\nTo implement sharding successfully, it's important to choose an appropriate sharding key, use a consistent hashing algorithm for data distribution, and have a robust monitoring and management system in place to handle the increased operational complexity."
+    },
+    {
+        "role": "Interviewer",
+        "message": "What is the purpose of database indexing, and how do you determine which columns to index in order to optimize query performance?"
+    },
+    {
+        "role": "Candidate",
+        "message": "The purpose of database indexing is to improve query performance by allowing the database to quickly locate and retrieve specific rows of data without having to scan the entire table.\n\nTo determine which columns to index, I consider:\n\n1. Columns frequently used in WHERE, JOIN, and ORDER BY clauses, as indexes can dramatically speed up these operations.\n\n2. Columns with high cardinality (many distinct values), as indexes are most effective on selective columns. Low cardinality columns are less suitable.\n\n3. Queries that are run often or are critical to application performance. I prioritize indexing columns that will have the greatest impact. \n\n4. The trade-off between faster reads and slower writes. Too many indexes can hinder write performance.\n\nFor example, on a users table, I would likely index columns like email and username that are often used to look up specific users. I would avoid indexing boolean columns like is_active that have very low cardinality."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Describe the differences between a SQL inner join, left join, right join, and full outer join, and explain when you would use each type of join to combine data from multiple tables."
+    },
+    {
+        "role": "Candidate",
+        "message": "An inner join returns only the matching rows between the joined tables. It's used when you need results containing data that exists in both tables.\n\nExample: Joining \"orders\" and \"customers\" tables on \"customer_id\" to get all orders with corresponding customer information.\n\nA left join returns all rows from the left table and the matching rows from the right table. Non-matching rows in the right table contain NULL. It's used when you need all records from the left table, even if there are no matches in the right table. \n\nExample: Joining \"customers\" and \"orders\" to get all customers and their orders, including customers with no orders.\n\nA right join is the reverse of a left join. It returns all rows from the right table and matching rows from the left table. It's used when you need all records from the right table.\n\nExample: Joining \"orders\" and \"products\" to get all products and their orders, including products with no orders.\n\nA full outer join returns all rows from both tables, using NULL for non-matches on either side. It's used when you need all records from both tables, showing matches and non-matches.\n\nExample: Joining \"students\" and \"classes\" to get all students and classes, showing which students are in which classes, students with no classes, and classes with no students."
+    },
+    {
+        "role": "Interviewer",
+        "message": "Explain the concept of database normalization, and describe the main normal forms (1NF, 2NF, 3NF, BCNF) and how they help improve data integrity and reduce data redundancy."
+    },
+    {
+        "role": "Candidate",
+        "message": "Normalization is the process of organizing data in a database to minimize redundancy and dependency. The main normal forms are:\n\n1NF: Each column contains atomic values, and each row is unique. This eliminates repeating groups and ensures data is stored in individual columns.\n\n2NF: The table is in 1NF and all non-key columns depend on the entire primary key. This removes partial dependencies where a non-key column depends on only part of a composite key. \n\n3NF: The table is in 2NF and has no transitive dependencies, meaning non-key columns only depend on the primary key and not on other non-key columns.\n\nBCNF: A stronger version of 3NF where every determinant is a candidate key. A table is in BCNF if for every dependency X \u2192 Y, X is a super key.\n\nNormalization helps improve data integrity by organizing data into separate tables to reduce redundant entries and anomalies from data modification. It minimizes data duplication and ensures data dependencies make sense, leading to a cleaner database design."
+    }
+]
